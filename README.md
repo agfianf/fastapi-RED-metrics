@@ -39,7 +39,6 @@ RED metrics are a set of metrics that provide a high-level overview of your serv
 
 - Use Prometheus to scrape and store the metrics.
 - Use Grafana to visualize the metrics with the provided dashboard template.
-- Dashboard Explanation [Panel RED Metrics Description](assets/query_per_panel.md)
 
 Enjoy monitoring your FastAPI application with RED metrics!
 
