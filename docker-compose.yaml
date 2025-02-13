@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  fastapi-app:
+    build:
+      context: ${PWD}/fastapi-app
+      dockerfile: Dockerfile
+    image: fastapi-app:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - ${PWD}/fastapi-app:/app
+    env_file:
+      - ${PWD}/fastapi-app/.env
+    command: ["python", "main.py"]
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:v2.53.2
+    volumes:
+      - ${PWD}/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${PWD}/tmp/prometheus:/prometheus
+    ports:
+      - 9090:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:11.1.1
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${PWD}/tmp/grafana:/var/lib/grafana
+    #   - ${PWD}/monitoring/grafana/provisioning:/etc/grafana/provisioning
+    #   - ${PWD}/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      # - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      # - GF_PATHS_DASHBOARDS=/var/lib/grafana/dashboards
+    # user: "472"
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge

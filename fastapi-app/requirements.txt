@@ -1,0 +1,7 @@
+fastapi==0.111.0
+pre-commit==3.8.0
+prometheus-client==0.20.0
+prometheus-fastapi-instrumentator==7.0.0
+pydantic==2.8.2
+pydantic-settings==2.4.0
+uvicorn==0.30.5

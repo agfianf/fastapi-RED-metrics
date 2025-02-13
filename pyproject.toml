@@ -1,0 +1,80 @@
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "env",
+	".idea",
+    "migrations",
+    "alembic"
+]
+line-length = 79
+indent-width = 4
+respect-gitignore = true
+fix = true
+show-fixes = true
+target-version = "py312"
+required-version = ">=0.6.1"
+
+[tool.ruff.lint]
+select = [
+    "C",
+    "E",
+    "F",
+    "W",
+    "B",
+    "Q", # fixing single quote jadi double quote
+    "COM812",
+    "ANN",
+    "ARG", # flake8-unused-arguments
+    "I001",
+    "ASYNC",
+    "N",
+    "UP",
+    "YTT",
+    "PERF",
+    "ERA001",
+    "SIM", # flake8-simplify
+    "SLF",
+    "C901",
+    "ISC002"
+]
+ignore = [
+    "N805",
+    "E203",
+    "ANN101",
+    "B008"
+]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = ["F401"]
+
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
+line-ending = "lf"
