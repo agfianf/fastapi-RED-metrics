@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
 from app.controllers.example import router as route_example
-from app.helper.metrics_scratch import RED_METRICS, metrics_endpoint
+from app.helper.metrics import METRICS_COLLECTOR, expose_metrics_endpoint
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,12 +27,12 @@ app.add_middleware(
 )
 
 
-# Add routes
+# Add routes sample
 app.include_router(route_example)
 
 # Add metrics endpoint
-RED_METRICS.init_app(app)
-app.add_api_route("/metrics", metrics_endpoint, methods=["GET"])
+METRICS_COLLECTOR.init_app(app)
+app.add_api_route("/metrics", expose_metrics_endpoint, methods=["GET"])
 
 
 if __name__ == "__main__":
@@ -43,5 +43,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True,
+        reload=True,  # set to False for production
     )
