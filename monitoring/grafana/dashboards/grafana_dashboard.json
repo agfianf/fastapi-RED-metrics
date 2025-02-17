@@ -79,10 +79,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
+          "editorMode": "status_code",
           "expr": "sum(rate(http_request_duration_seconds_count[1m]))",
           "instant": false,
-          "legendFormat": "{{handler}}",
+          "legendFormat": "{{endpoint}}",
           "range": true,
           "refId": "A"
         }
@@ -179,10 +179,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "sum by (handler) (increase(http_request_duration_seconds_count[1m]))",
+          "editorMode": "status_code",
+          "expr": "sum by (endpoint) (increase(http_request_duration_seconds_count[1m]))",
           "instant": false,
-          "legendFormat": "{{handler}}",
+          "legendFormat": "{{endpoint}}",
           "range": true,
           "refId": "A"
         }
@@ -278,10 +278,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "sum(http_requests_inflight) by (handler)",
+          "editorMode": "status_code",
+          "expr": "sum(http_requests_inflight) by (endpoint)",
           "instant": false,
-          "legendFormat": "{{handler}} {{method}}",
+          "legendFormat": "{{endpoint}} {{method}}",
           "range": true,
           "refId": "A"
         }
@@ -377,10 +377,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "(sum(rate(http_request_duration_seconds_count{code=~\"4..\"}[1m])) by (code, handler, method)) / (sum(rate(http_request_duration_seconds_count[1m])) by (code, handler, method)) * 100",
+          "editorMode": "status_code",
+          "expr": "(sum(rate(http_request_duration_seconds_count{status_code=~\"4..\"}[1m])) by (status_code, endpoint, method)) / (sum(rate(http_request_duration_seconds_count[1m])) by (status_code, endpoint, method)) * 100",
           "instant": false,
-          "legendFormat": "{{code}}: {{handler}} {{ method }}",
+          "legendFormat": "{{status_code}}: {{endpoint}} {{ method }}",
           "range": true,
           "refId": "A"
         },
@@ -389,11 +389,11 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "(sum(rate(http_request_duration_seconds_count{code=~\"5..\"}[1m])) by (code, handler, method)) / (sum(rate(http_request_duration_seconds_count[1m])) by (code, handler, method)) * 100",
+          "editorMode": "status_code",
+          "expr": "(sum(rate(http_request_duration_seconds_count{status_code=~\"5..\"}[1m])) by (status_code, endpoint, method)) / (sum(rate(http_request_duration_seconds_count[1m])) by (status_code, endpoint, method)) * 100",
           "hide": false,
           "instant": false,
-          "legendFormat": "{{code}}: {{handler}} {{ method }}",
+          "legendFormat": "{{status_code}}: {{endpoint}} {{ method }}",
           "range": true,
           "refId": "B"
         },
@@ -402,11 +402,11 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "(sum(rate(http_request_duration_seconds_count{code=~\"4..\"}[1m])) by (code, handler, method))",
+          "editorMode": "status_code",
+          "expr": "(sum(rate(http_request_duration_seconds_count{status_code=~\"4..\"}[1m])) by (status_code, endpoint, method))",
           "hide": false,
           "instant": false,
-          "legendFormat": "{{code}}: {{handler}} {{ method }}",
+          "legendFormat": "{{status_code}}: {{endpoint}} {{ method }}",
           "range": true,
           "refId": "C"
         }
@@ -508,10 +508,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "histogram_quantile(\n    0.95, \n    sum by (handler, method, le) (rate(http_request_duration_seconds_bucket[10m]))\n)",
+          "editorMode": "status_code",
+          "expr": "histogram_quantile(\n    0.95, \n    sum by (endpoint, method, le) (rate(http_request_duration_seconds_bucket[10m]))\n)",
           "instant": false,
-          "legendFormat": "{{method}}: {{handler}} ",
+          "legendFormat": "{{method}}: {{endpoint}} ",
           "range": true,
           "refId": "A"
         }
@@ -613,10 +613,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "code",
-          "expr": "histogram_quantile(\n    0.5, \n    sum by (handler, method, le) (rate(http_request_duration_seconds_bucket[10m]))\n)",
+          "editorMode": "status_code",
+          "expr": "histogram_quantile(\n    0.5, \n    sum by (endpoint, method, le) (rate(http_request_duration_seconds_bucket[10m]))\n)",
           "instant": false,
-          "legendFormat": "{{method}}: {{handler}} ",
+          "legendFormat": "{{method}}: {{endpoint}} ",
           "range": true,
           "refId": "A"
         }

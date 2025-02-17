@@ -39,8 +39,8 @@ app.add_middleware(
 
 
 # add redirect to docs
-@app.get("/")
-async def redirect_to_docs():
+@app.get("/", include_in_schema=False)
+async def redirect_to_docs():  # noqa: ANN201, D103
     return RedirectResponse(url="/docs")
 
 
@@ -49,7 +49,12 @@ app.include_router(route_example)
 
 # Add metrics endpoint
 METRICS_COLLECTOR.init_app(app)
-app.add_api_route("/metrics", expose_metrics_endpoint, methods=["GET"])
+app.add_api_route(
+    "/metrics",
+    expose_metrics_endpoint,
+    methods=["GET"],
+    include_in_schema=False,
+)
 
 
 if __name__ == "__main__":

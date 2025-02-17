@@ -124,6 +124,8 @@ class PrometheusMetricsCollector:
 
         """
         excluded_paths = {
+            "/": True,
+            "/redoc": True,
             "/metrics": True,
             "/health": True,
             "/docs": True,

@@ -5,3 +5,9 @@ test-hello:
 
 test-random:
 	ab -n 20 -c 1 -s 120 http://localhost:8000/random
+
+up:
+	docker-compose up --build -d 
+
+down:
+	docker-compose down
