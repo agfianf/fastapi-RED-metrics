@@ -4,6 +4,7 @@ from app.controllers.example import router as route_example
 from app.helper.metrics import METRICS_COLLECTOR, expose_metrics_endpoint
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 
 @asynccontextmanager
@@ -13,7 +14,17 @@ async def lifespan(app: FastAPI):  # noqa: ANN201, D103
 
 app = FastAPI(
     title="FastAPI RED Metrics",
-    description="Example RED Metrics implementations",
+    description="""FastAPI RED Metrics Example 🚀
+
+Monitor your API's **R**ate, **E**rrors, and **D**uration with this FastAPI 
+example. 
+
+#### Visualize API Traffic 📊
+Explore the metrics in Grafana and Prometheus:
+
+- [Grafana](http://localhost:3000) (admin:admin) 
+- [Prometheus](http://localhost:9090) 
+    """,
     version="v0.0.1-local",
     lifespan=lifespan,
 )
@@ -25,6 +36,12 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+
+
+# add redirect to docs
+@app.get("/")
+async def redirect_to_docs():
+    return RedirectResponse(url="/docs")
 
 
 # Add routes sample

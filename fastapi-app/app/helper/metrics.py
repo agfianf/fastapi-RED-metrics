@@ -283,7 +283,9 @@ class PrometheusMetricsMiddleware(BaseHTTPMiddleware):
             Normalized path with numeric segments replaced
 
         """
-        return re.sub(r"/[^/]*\d[^/]*", "/:id", path)
+        pattern = r"/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"  # noqa: E501
+        path = re.sub(pattern, "/:id", path)
+        return path
 
     def exclude_paths(self, paths: list[str]) -> None:
         """Add paths to exclude from metrics collection.
