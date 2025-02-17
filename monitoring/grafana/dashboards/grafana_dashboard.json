@@ -79,7 +79,7 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
+          "editorMode": "code",
           "expr": "sum(rate(http_request_duration_seconds_count[1m]))",
           "instant": false,
           "legendFormat": "{{endpoint}}",
@@ -179,10 +179,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
-          "expr": "sum by (endpoint) (increase(http_request_duration_seconds_count[1m]))",
+          "editorMode": "code",
+          "expr": "sum by (method, endpoint) (increase(http_request_duration_seconds_count[1m]))",
           "instant": false,
-          "legendFormat": "{{endpoint}}",
+          "legendFormat": "{{method}} {{endpoint}}",
           "range": true,
           "refId": "A"
         }
@@ -278,10 +278,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
-          "expr": "sum(http_requests_inflight) by (endpoint)",
+          "editorMode": "code",
+          "expr": "sum(http_requests_active) by (endpoint, method)",
           "instant": false,
-          "legendFormat": "{{endpoint}} {{method}}",
+          "legendFormat": "{{method}} {{endpoint}} ",
           "range": true,
           "refId": "A"
         }
@@ -377,10 +377,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
+          "editorMode": "code",
           "expr": "(sum(rate(http_request_duration_seconds_count{status_code=~\"4..\"}[1m])) by (status_code, endpoint, method)) / (sum(rate(http_request_duration_seconds_count[1m])) by (status_code, endpoint, method)) * 100",
           "instant": false,
-          "legendFormat": "{{status_code}}: {{endpoint}} {{ method }}",
+          "legendFormat": "{{status_code}} {{ method }} {{endpoint}} ",
           "range": true,
           "refId": "A"
         },
@@ -389,11 +389,11 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
+          "editorMode": "code",
           "expr": "(sum(rate(http_request_duration_seconds_count{status_code=~\"5..\"}[1m])) by (status_code, endpoint, method)) / (sum(rate(http_request_duration_seconds_count[1m])) by (status_code, endpoint, method)) * 100",
           "hide": false,
           "instant": false,
-          "legendFormat": "{{status_code}}: {{endpoint}} {{ method }}",
+          "legendFormat": "{{status_code}} {{ method }} {{endpoint}} ",
           "range": true,
           "refId": "B"
         },
@@ -402,11 +402,11 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
+          "editorMode": "code",
           "expr": "(sum(rate(http_request_duration_seconds_count{status_code=~\"4..\"}[1m])) by (status_code, endpoint, method))",
           "hide": false,
           "instant": false,
-          "legendFormat": "{{status_code}}: {{endpoint}} {{ method }}",
+          "legendFormat": "{{status_code}} {{ method }} {{endpoint}} ",
           "range": true,
           "refId": "C"
         }
@@ -508,10 +508,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
+          "editorMode": "code",
           "expr": "histogram_quantile(\n    0.95, \n    sum by (endpoint, method, le) (rate(http_request_duration_seconds_bucket[10m]))\n)",
           "instant": false,
-          "legendFormat": "{{method}}: {{endpoint}} ",
+          "legendFormat": "{{method}} {{endpoint}} ",
           "range": true,
           "refId": "A"
         }
@@ -613,10 +613,10 @@
             "type": "prometheus",
             "uid": "adv7wnwe2lw5cc"
           },
-          "editorMode": "status_code",
+          "editorMode": "code",
           "expr": "histogram_quantile(\n    0.5, \n    sum by (endpoint, method, le) (rate(http_request_duration_seconds_bucket[10m]))\n)",
           "instant": false,
-          "legendFormat": "{{method}}: {{endpoint}} ",
+          "legendFormat": "{{method}} {{endpoint}} ",
           "range": true,
           "refId": "A"
         }
@@ -632,13 +632,13 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "New dashboard",
   "uid": "adv7wut01apdse",
-  "version": 6,
+  "version": 8,
   "weekStart": ""
 }
