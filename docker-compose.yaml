@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: fastapi-app:latest
     ports:
-      - 8000:8000
+      - 18123:8000
     volumes:
       - ${PWD}/fastapi-app:/app
     env_file:

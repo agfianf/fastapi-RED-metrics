@@ -2,6 +2,8 @@
 
 This project demonstrates how to implement RED (Rate, Errors, Duration) metrics in a FastAPI application using Prometheus and Grafana.
 
+[Open API Documentation](http://localhost:18123/docs)
+
 ## What are RED Metrics?
 
 RED metrics are a set of metrics that provide a high-level overview of your service's performance:
