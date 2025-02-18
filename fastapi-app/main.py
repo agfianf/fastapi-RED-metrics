@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+from app.controllers.ai import router as route_ai
 from app.controllers.example import router as route_example
 from app.helper.metrics import METRICS_COLLECTOR, expose_metrics_endpoint
 from fastapi import FastAPI
@@ -46,6 +47,7 @@ async def redirect_to_docs():  # noqa: ANN201, D103
 
 # Add routes sample
 app.include_router(route_example)
+app.include_router(route_ai)
 
 # Add metrics endpoint
 METRICS_COLLECTOR.init_app(app)
