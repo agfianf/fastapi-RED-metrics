@@ -37,8 +37,8 @@ services:
       - "3000:3000"
     volumes:
       - ${PWD}/tmp/grafana:/var/lib/grafana
-    #   - ${PWD}/monitoring/grafana/provisioning:/etc/grafana/provisioning
-    #   - ${PWD}/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - ${PWD}/monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ${PWD}/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       # - GF_PATHS_PROVISIONING=/etc/grafana/provisioning

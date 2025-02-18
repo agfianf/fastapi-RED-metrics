@@ -11,3 +11,4 @@ datasources:
       queryTimeout: 60s
       httpMethod: POST
     editable: true
+    uid: adv7wnwe2lw5cc
