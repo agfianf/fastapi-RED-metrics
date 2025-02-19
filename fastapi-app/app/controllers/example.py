@@ -1,91 +1,185 @@
-import asyncio
-import random
-import uuid
+from datetime import datetime
+from typing import Annotated
+from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Body, HTTPException
+from app.schemas.example import ProductBase, ProductResponse
+from fastapi import APIRouter, Body, HTTPException, Path, Query
 
-router = APIRouter()
-
-
-@router.get("/hello")
-async def hello() -> dict:  # noqa: D103
-    await asyncio.sleep(random.uniform(3, 7))
-    return {"message": "Hello, World!"}
+router = APIRouter(
+    prefix="/api/v1/products",
+    tags=["products"],
+)
 
 
-@router.get("/random")
-async def random_number() -> dict:  # noqa: D103
-    # Simulate some processing time
-    await asyncio.sleep(random.uniform(0.1, 0.5))
+async def simulate_db_latency(operation: str) -> None:
+    """Simulate database operation latency with realistic timing."""
+    import asyncio
+    import random
 
-    # Randomly raise an error
-    random_value = random.random()
-    if random_value < 0.2 and random_value > 0.1:
-        raise HTTPException(status_code=500, detail="Random error occurred")
-    if random_value > 0.35:
-        raise HTTPException(status_code=400, detail="Random error occurred")
+    latency_ranges = {
+        "read": (0.05, 0.2),  # Fast reads
+        "write": (0.1, 0.3),  # Slower writes
+        "heavy": (0.3, 0.8),  # Heavy operations
+        "hell": (1.0, 10.0),  # Hell operations
+    }
+    await asyncio.sleep(random.uniform(*latency_ranges[operation]))
 
-    return {"number": random.randint(1, 100)}
 
+@router.get("")
+async def list_products(
+    page: Annotated[int, Query(ge=1)] = 1,
+    limit: Annotated[int, Query(ge=1, le=100)] = 20,
+    category: str | None = None,
+) -> dict:
+    """List products with pagination and optional filtering."""
+    await simulate_db_latency("read")
 
-@router.get("/unique/{unique_id}")
-async def unique_endpoint(unique_id: str) -> dict:  # noqa: D103
-    # Simulate some processing time
-    await asyncio.sleep(random.uniform(0.2, 0.6))
-
-    # Randomly raise an error
-    random_value = random.random()
-    if random_value < 0.15:
+    if page > 10 and limit > 50:  # Simulate overload condition
         raise HTTPException(
-            status_code=500,
-            detail=f"Error with ID {unique_id}",
+            status_code=503,
+            detail="Service temporarily overloaded. Please reduce page size.",
         )
-    if random_value > 0.4:
+
+    return {
+        "items": [
+            ProductResponse(
+                id=uuid4(),
+                name=f"Product {i}",
+                description="Sample product",
+                price=99.99,
+                category="electronics",
+                created_at=datetime.now(),
+                updated_at=datetime.now(),
+            ).model_dump()
+            for i in range(limit)
+        ],
+        "total": 100,
+        "page": page,
+        "limit": limit,
+    }
+
+
+@router.post("")
+async def create_product(
+    product: Annotated[ProductBase, Body()],
+) -> ProductResponse:
+    """Create a new product."""
+    await simulate_db_latency("write")
+
+    if product.price > 1000:  # Simulate validation error
         raise HTTPException(
             status_code=400,
-            detail=f"Error with ID {unique_id}",
+            detail="Price exceeds maximum allowed value",
         )
 
-    return {"unique_id": unique_id, "status": "success"}
+    return ProductResponse(
+        id=uuid4(),
+        **product.model_dump(),
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
 
 
-@router.get("/process/{process_id}")
-async def process_endpoint(process_id: str) -> dict:  # noqa: D103
-    # Simulate some processing time
-    await asyncio.sleep(random.uniform(0.3, 0.7))
+@router.get("/{product_id}")
+async def get_product(
+    product_id: Annotated[UUID, Path()],
+) -> ProductResponse:
+    """Retrieve a single product by ID."""
+    await simulate_db_latency("read")
 
-    # Randomly raise an error
-    random_value = random.random()
-    if random_value < 0.1:
+    if str(product_id).startswith("0"):  # Simulate not found
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    return ProductResponse(
+        id=product_id,
+        name="Sample Product",
+        description="Detailed description",
+        price=199.99,
+        category="electronics",
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
+
+
+@router.put("/{product_id}")
+async def update_product(
+    product_id: Annotated[UUID, Path()],
+    product: Annotated[ProductBase, Body()],
+) -> ProductResponse:
+    """Update an existing product."""
+    await simulate_db_latency("write")
+
+    if str(product_id).startswith("0"):  # Simulate not found
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    if str(product_id).startswith("1"):  # Simulate conflict
+        raise HTTPException(
+            status_code=409,
+            detail="Product was modified by another request",
+        )
+
+    return ProductResponse(
+        id=product_id,
+        **product.model_dump(),
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
+
+
+@router.delete("/{product_id}")
+async def delete_product(
+    product_id: Annotated[UUID, Path()],
+) -> dict:
+    """Delete a product."""
+    await simulate_db_latency("write")
+
+    if str(product_id).startswith("0"):  # Simulate not found
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    if str(product_id).startswith("9"):  # Simulate server error
         raise HTTPException(
             status_code=500,
-            detail=f"Process error with ID {process_id}",
+            detail="Internal server error during deletion",
         )
-    if random_value > 0.5:
+
+    return {"status": "success", "message": f"Product {product_id} deleted"}
+
+
+@router.post("/{product_id}/process")
+async def process_product(
+    product_id: Annotated[UUID, Path()],
+) -> dict:
+    """Process a product (simulating a heavy operation).
+
+    Example UUIDs for testing:
+
+    - normal: Process successfully:
+
+    `15ca8c18-43d4-4da3-ad14-2dc127365b04`
+
+    - 0: Simulate not found.
+
+    `05ca8c18-43d4-4da3-ad14-2dc127365b04`
+
+    - 5: Simulate timeout.
+
+    `55ca8c18-43d4-4da3-ad14-2dc127365b04`
+
+    """
+    await simulate_db_latency("heavy")
+
+    if str(product_id).startswith("0"):  # Simulate not found
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    if str(product_id).startswith("5"):  # Simulate timeout
         raise HTTPException(
-            status_code=400,
-            detail=f"Process error with ID {process_id}",
+            status_code=504,
+            detail="Processing timed out",
         )
 
-    return {"process_id": process_id, "result": "completed"}
-
-
-@router.post("/create")
-async def create_item(item: dict = Body(...)) -> dict:
-    # Simulate item creation
-    await asyncio.sleep(random.uniform(0.1, 0.3))
-    return {"item_id": str(uuid.uuid4()), "item": item}
-
-
-@router.put("/update/{item_id}")
-async def update_item(item_id: str, item: dict = Body(...)) -> dict:
-    # Simulate item update
-    await asyncio.sleep(random.uniform(0.1, 0.3))
-    return {"item_id": item_id, "updated_item": item}
-
-
-@router.delete("/delete/{item_id}")
-async def delete_item(item_id: str) -> dict:
-    # Simulate item deletion
-    await asyncio.sleep(random.uniform(0.1, 0.3))
-    return {"item_id": item_id, "status": "deleted"}
+    return {
+        "status": "success",
+        "product_id": product_id,
+        "process_id": uuid4(),
+        "completed_at": datetime.now().isoformat(),
+    }

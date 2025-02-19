@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
 
+from app.controllers.ai import router as route_ai
 from app.controllers.example import router as route_example
-from app.helper.metrics_scratch import RED_METRICS, metrics_endpoint
+from app.helper.metrics import METRICS_COLLECTOR, expose_metrics_endpoint
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 
 
 @asynccontextmanager
@@ -13,7 +15,17 @@ async def lifespan(app: FastAPI):  # noqa: ANN201, D103
 
 app = FastAPI(
     title="FastAPI RED Metrics",
-    description="Example RED Metrics implementations",
+    description="""FastAPI RED Metrics Example 🚀
+
+Monitor your API's **R**ate, **E**rrors, and **D**uration with this FastAPI 
+example. 
+
+#### Visualize API Traffic 📊
+Explore the metrics in Grafana and Prometheus:
+
+- [Grafana](http://localhost:3000) (admin:admin) 
+- [Prometheus](http://localhost:9090) 
+    """,
     version="v0.0.1-local",
     lifespan=lifespan,
 )
@@ -27,12 +39,24 @@ app.add_middleware(
 )
 
 
-# Add routes
+# add redirect to docs
+@app.get("/", include_in_schema=False)
+async def redirect_to_docs():  # noqa: ANN201, D103
+    return RedirectResponse(url="/docs")
+
+
+# Add routes sample
 app.include_router(route_example)
+app.include_router(route_ai)
 
 # Add metrics endpoint
-RED_METRICS.init_app(app)
-app.add_api_route("/metrics", metrics_endpoint, methods=["GET"])
+METRICS_COLLECTOR.init_app(app)
+app.add_api_route(
+    "/metrics",
+    expose_metrics_endpoint,
+    methods=["GET"],
+    include_in_schema=False,
+)
 
 
 if __name__ == "__main__":
@@ -43,5 +67,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True,
+        reload=True,  # set to False for production
     )

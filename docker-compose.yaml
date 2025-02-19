@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: fastapi-app:latest
     ports:
-      - 8000:8000
+      - 18123:8000
     volumes:
       - ${PWD}/fastapi-app:/app
     env_file:
@@ -36,9 +36,9 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ${PWD}/tmp/grafana:/var/lib/grafana
-    #   - ${PWD}/monitoring/grafana/provisioning:/etc/grafana/provisioning
-    #   - ${PWD}/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      # - ${PWD}/tmp/grafana:/var/lib/grafana
+      - ${PWD}/monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ${PWD}/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       # - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
