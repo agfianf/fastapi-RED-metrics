@@ -28,6 +28,30 @@ This project uses Locust for load testing (simulating real usage). When you run 
 - Target the API at http://localhost:18123
 - Run in headless mode (without Web UI)
 
+## How to Implement to Your Own FastAPI Application
+
+1. **Install Dependencies**: Add the required dependencies to your `requirements.txt`
+2. copy `metrics.py` to your FastAPI application
+3. in main.py, import and include the metrics middleware
+```python
+...
+
+from <your-path>.metrics import METRICS_COLLECTOR, expose_metrics_endpoint
+
+...
+
+# Add metrics endpoint
+METRICS_COLLECTOR.init_app(app)
+app.add_api_route(
+    "/metrics",
+    expose_metrics_endpoint,
+    methods=["GET"],
+    include_in_schema=False,
+)
+
+...
+```
+
 ## 🤔 What are RED Metrics?
 
 RED metrics are a set of metrics that provide a high-level overview of your service's performance:
