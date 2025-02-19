@@ -21,7 +21,12 @@ This project demonstrates how to implement RED (Rate, Errors, Duration) metrics 
 
 ## How Run the Simulation
 
-- Run `make simulate`
+This project uses Locust for load testing (simulating real usage). When you run `make simulate`, Locust will:
+
+- Start 10 users (virtual clients)
+- Spawn rate of 1 user per second
+- Target the API at http://localhost:18123
+- Run in headless mode (without Web UI)
 
 ## 🤔 What are RED Metrics?
 
