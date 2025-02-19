@@ -32,7 +32,7 @@ This project uses Locust for load testing (simulating real usage). When you run 
 
 1. **Install Dependencies**: Add the required dependencies to your `requirements.txt`
 2. copy `metrics.py` to your FastAPI application
-3. in main.py, import and include the metrics middleware
+3. in `main.py`, import and include the metrics middleware
 ```python
 ...
 
