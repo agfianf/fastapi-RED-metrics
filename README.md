@@ -1,4 +1,4 @@
-# FastAPI RED Metrics Project
+# FastAPI RED Metrics 
 
 This project demonstrates how to implement RED (Rate, Errors, Duration) metrics in a FastAPI application using Prometheus and Grafana.
 
