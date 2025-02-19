@@ -11,3 +11,6 @@ up:
 
 down:
 	docker-compose down
+
+simulate:
+	locust -f simulate.py --headless --users 10 --spawn-rate 1 -H http://localhost:18123

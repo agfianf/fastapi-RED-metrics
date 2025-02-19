@@ -17,6 +17,10 @@ This project demonstrates how to implement RED (Rate, Errors, Duration) metrics 
 7. Access Grafana at `http://localhost:3000` (default credentials: admin/admin)
 8. on Grafana you can import by using json file in `monitoring/grafana/dashboards/grafana_dashboard.json` to your grafana dashboard
 
+## How Run the Simulation
+
+Run `make simulate`
+
 
 ## 🤔 What are RED Metrics?
 
@@ -48,5 +52,5 @@ RED metrics are a set of metrics that provide a high-level overview of your serv
 
 Enjoy monitoring your FastAPI application with RED metrics!
 
-![red-sample](assets/red-dashboard-sample.png)
-![red-sample-2](assets/red-dashboard.png)
+![red-sample](assets/sample-dashboard-1.png)
+![red-sample-2](assets/sample-dashboard-2.png)
