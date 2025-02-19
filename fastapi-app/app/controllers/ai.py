@@ -39,11 +39,11 @@ async def predict(
 
     """
     # Simulate random processing time between 0.1 and 2 seconds
-    processing_time = random.uniform(0.1, 59.0)
+    processing_time = random.uniform(0.1, 10.0)
     await asyncio.sleep(processing_time)
 
     # Randomly generate errors if simulate_error is True
-    if simulate_error and random.random() < 0.5:
+    if simulate_error:
         error_codes = [400, 401, 403, 500, 503]
         error_code = random.choice(error_codes)
         raise HTTPException(

@@ -20,7 +20,7 @@ async def simulate_db_latency(operation: str) -> None:
         "read": (0.05, 0.2),  # Fast reads
         "write": (0.1, 0.3),  # Slower writes
         "heavy": (0.3, 0.8),  # Heavy operations
-        "hell": (1.0, 59.0),  # Hell operations
+        "hell": (1.0, 10.0),  # Hell operations
     }
     await asyncio.sleep(random.uniform(*latency_ranges[operation]))
 
@@ -149,7 +149,23 @@ async def delete_product(
 async def process_product(
     product_id: Annotated[UUID, Path()],
 ) -> dict:
-    """Process a product (simulating a heavy operation)."""
+    """Process a product (simulating a heavy operation).
+
+    Example UUIDs for testing:
+
+    - normal: Process successfully:
+
+    `15ca8c18-43d4-4da3-ad14-2dc127365b04`
+
+    - 0: Simulate not found.
+
+    `05ca8c18-43d4-4da3-ad14-2dc127365b04`
+
+    - 5: Simulate timeout.
+
+    `55ca8c18-43d4-4da3-ad14-2dc127365b04`
+
+    """
     await simulate_db_latency("heavy")
 
     if str(product_id).startswith("0"):  # Simulate not found

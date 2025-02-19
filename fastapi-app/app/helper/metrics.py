@@ -73,26 +73,24 @@ class PrometheusMetricsCollector:
             documentation="HTTP request latency in seconds",
             labelnames=["method", "status_code", "endpoint", "service"],
             buckets=(
-                0.001,
-                0.005,
-                0.01,
-                0.025,
-                0.05,
-                0.075,
-                0.1,
-                0.25,
-                0.5,
-                0.75,
-                1.0,
-                2.5,
-                5.0,
-                7.5,
-                10.0,
-                15.0,
-                20.0,
-                30.0,
-                45.0,
-                60.0,
+                # Set this based on your SLA
+                # If your SLA is 99.9% requests under 300ms
+                # Excellent
+                0.005,  # 5ms
+                0.01,  # 10ms
+                0.025,  # 25ms
+                0.05,  # 50ms
+                0.075,  # 75ms
+                # Good
+                0.1,  # 100ms
+                0.25,  # 250ms
+                # Moderate
+                0.5,  # 500ms
+                0.75,  # 750ms
+                # Poor
+                1.0,  # 1s
+                2.5,  # 2.5s
+                5.0,  # 5s
                 INF,
             ),
         )
