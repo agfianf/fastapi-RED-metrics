@@ -57,3 +57,9 @@ RED metrics are a set of metrics that provide a high-level overview of your serv
 - Use Grafana to visualize the metrics with the provided dashboard template.
 
 Enjoy monitoring your FastAPI application with RED metrics!
+
+
+## References
+- [fastapi-observability](https://github.com/blueswen/fastapi-observability?tab=readme-ov-file#quick-start)
+- [Prometheus and Grafana](https://last9.io/blog/prometheus-and-grafana/)
+- [The RED Method: How to Instrument Your Services](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services/)
