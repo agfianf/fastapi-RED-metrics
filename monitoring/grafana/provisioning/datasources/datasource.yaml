@@ -7,8 +7,11 @@ datasources:
     url: http://prometheus:9090
     isDefault: true
     jsonData:
-      timeInterval: 5s
-      queryTimeout: 60s
+      timeInterval: 5s              # Minimum time interval
+      queryTimeout: 60s             # Query timeout
       httpMethod: POST
+      exemplarTraceIdDestinations:  # For trace linking
+      intervalFactor: 1             # Resolution adjustment
+      maxDataPoints: 11000          # Max points returned
     editable: true
     uid: adv7wnwe2lw5cc

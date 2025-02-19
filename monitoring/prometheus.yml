@@ -1,7 +1,17 @@
 global:
-  scrape_interval: 1s
+  scrape_interval: 15s      # How often Prometheus scrapes targets globally
+  evaluation_interval: 15s  # How often Prometheus evaluates rules globally
+  scrape_timeout: 10s       # Maximum time allowed for a scrape globally (must be less than scrape_interval)
 
 scrape_configs:
-  - job_name: fastapi
+  - job_name: fastapi       # Name of the scrape job
     static_configs:
-      - targets: ['fastapi-app:8000']
+      - targets: ['fastapi-app:8000']  # Target to scrape metrics from
+    metrics_path: /metrics   # Path to scrape metrics (default is /metrics)
+    scheme: http             # Protocol to use (http or https)
+    scrape_interval: 5s      # How often Prometheus scrapes this job (overrides global)
+    scrape_timeout: 4s       # Maximum time allowed for a scrape for this job (must be less than scrape_interval)
+  
+# Rules:
+# - Global scrape_timeout < global scrape_interval
+# - Job scrape_timeout < job scrape_interval
