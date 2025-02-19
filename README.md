@@ -77,6 +77,37 @@ RED metrics are a set of metrics that provide a high-level overview of your serv
 
 ## 📈 Monitoring
 
+```mermaid
+flowchart LR
+    A["**FastAPI /metrics Endpoint**<br>_Exposes RED metrics data_"]
+    B["**Prometheus Scraper**<br>_Scrapes metrics at configured interval_"]
+    C["**Time Series DB**<br>_Stores & compresses metric data_"]
+    D["**PromQL Engine**<br>_Processes metric queries_"]
+    E["**Grafana Datasource**<br>_Prometheus connection config_"]
+    F["**Query Panel**<br>_Sends queries & manages refresh_"]
+    G["**Dashboard View**<br>_Displays metrics visualization_"]
+  
+    subgraph Application
+        direction TB
+        A
+    end
+  
+    subgraph Prometheus
+        direction TB
+        B --> C
+        C --> D
+    end
+  
+    subgraph Grafana
+        direction TB
+        E --> F
+        F --> G
+    end
+
+    Application --> Prometheus
+    Prometheus --> Grafana
+```
+
 - Use Prometheus to scrape and store the metrics.
 - Use Grafana to visualize the metrics with the provided dashboard template.
 
