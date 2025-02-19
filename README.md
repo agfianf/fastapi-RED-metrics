@@ -3,24 +3,25 @@
 This project demonstrates how to implement RED (Rate, Errors, Duration) metrics in a FastAPI application using Prometheus and Grafana.
 
 
+![red-sample](assets/sample-dashboard-1.png)
+![red-sample-2](assets/sample-dashboard-2.png)
+
+
 ## ⚡ How to Run
 
 1. Make sure you have Docker and Docker Compose installed.
 2. Clone this repository.
 3. Navigate to the project directory.
 4. Run `make up`
-
-> 👉 and open api swagger: [API Documentation](http://localhost:18123/docs)
-
-5. Access the FastAPI application at `http://localhost:18123/docs`
-6. Access Prometheus at `http://localhost:9090`
-7. Access Grafana at `http://localhost:3000` (default credentials: admin/admin)
-8. on Grafana you can import by using json file in `monitoring/grafana/dashboards/grafana_dashboard.json` to your grafana dashboard
+5. Access the FastAPI application at [API Documentation http://localhost:18123/docs](http://localhost:18123/docs)
+6. Access Prometheus at [http://localhost:9090](http://localhost:9090)
+7. Access Grafana at [http://localhost:3000](http://localhost:9090) 
+    - Login (default credentials: admin/admin)
+    - Go to Dashboard , select `FastAPP RED Metrics Dashboard`
 
 ## How Run the Simulation
 
-Run `make simulate`
-
+- Run `make simulate`
 
 ## 🤔 What are RED Metrics?
 
@@ -51,6 +52,3 @@ RED metrics are a set of metrics that provide a high-level overview of your serv
 - Use Grafana to visualize the metrics with the provided dashboard template.
 
 Enjoy monitoring your FastAPI application with RED metrics!
-
-![red-sample](assets/sample-dashboard-1.png)
-![red-sample-2](assets/sample-dashboard-2.png)
