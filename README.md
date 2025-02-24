@@ -1,5 +1,7 @@
 # FastAPI RED Metrics 
 
+Read more explanation [here](https://agfianf.github.io/blog/2025/02/24/monitoring-fastapi-applications-with-red-metrics/)
+
 This project demonstrates how to implement RED (Rate, Errors, Duration) metrics in a FastAPI application using Prometheus and Grafana.
 
 
